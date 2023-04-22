@@ -3,11 +3,8 @@ package com.jdbmAPIcore.controller;
 import com.jdbmAPIcore.controller.dto.InsertTableRequestDTO;
 import com.jdbmAPIcore.controller.dto.TableRequestDTO;
 
-import com.jdbmAPIcore.entity.Column;
 import com.jdbmAPIcore.service.TableService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
