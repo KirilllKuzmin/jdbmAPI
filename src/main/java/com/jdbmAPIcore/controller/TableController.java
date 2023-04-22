@@ -42,7 +42,7 @@ public class TableController {
         return tableService.getColumns(tableName);
     }
 
-    @DeleteMapping("/deleteFrom/{tableName}/{values}")
+    @DeleteMapping("/deleteFrom/{tableName}/{id}")
     public String deleteValues(@PathVariable String tableName, @PathVariable Long id) {
         return tableService.deleteFrom(tableName, id);
     }

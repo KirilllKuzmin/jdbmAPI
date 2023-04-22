@@ -48,9 +48,9 @@ public class TableService {
 
     public String dropTable(String tableName) {
 
-        String sql = "DROP TABLE ?";
+        String sql = "DROP TABLE " + tableName;
 
-        jdbcTemplate.update(sql, tableName);
+        jdbcTemplate.execute(sql);
 
         return "The " + tableName + " table has been dropped";
     }
@@ -102,9 +102,9 @@ public class TableService {
 
     public String deleteFrom(String tableName, Long id) {
 
-        String sql = "delete from " + tableName + " where id = ?";
+        String sql = "delete from " + tableName + " where id = " + id;
 
-        jdbcTemplate.update(sql, id);
+        jdbcTemplate.execute(sql);
 
         return "Delete values " + id + " from " + tableName;
     }
