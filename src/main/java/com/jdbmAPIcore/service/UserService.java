@@ -4,11 +4,14 @@ import com.jdbmAPIcore.entity.User;
 import com.jdbmAPIcore.exception.UserNotFoundException;
 import com.jdbmAPIcore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -20,8 +23,8 @@ public class UserService {
     }
 
     public Long createAccount(String name, String login, String password, Long phone) {
-        User user = new User(name, login, password, phone);
-        return userRepository.save(user).getId();
+        User User = new User(name, login, new BCryptPasswordEncoder().encode(password), phone);
+        return userRepository.save(User).getId();
     }
 
     public User getAccountById(Long id) {

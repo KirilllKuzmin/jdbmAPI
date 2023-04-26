@@ -91,7 +91,7 @@ public class TableService {
 
     public String getColumns(String tableName) {
 
-        String sql = "select column_name, column_type from information_schema.columns where table_name = upper(?)";
+        String sql = "select column_name, data_type from information_schema.columns where table_name = ?";
 
         List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, tableName);
 
