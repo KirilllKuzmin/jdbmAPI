@@ -52,13 +52,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/version").hasAnyRole("USER","ADMIN")
-                .antMatchers("/users").hasRole("ADMIN")
-                .antMatchers("/createUsers").hasRole("ADMIN")
-                .antMatchers("/createTable").hasAnyRole("USER","ADMIN")
-                .antMatchers("/tableColumns").hasAnyRole("USER","ADMIN")
-                .antMatchers("/deleteFrom").hasAnyRole("USER","ADMIN")
-                .antMatchers("/dropTable").hasAnyRole("ADMIN")
+                .authorizeRequests().antMatchers("/version", "/createTable", "/tableColumns", "/deleteFrom/{tableName}/{id}", "/selectFrom/{tableName}").hasAnyRole("USER","ADMIN")
+                .antMatchers("/users", "/createUsers", "/dropTable/{tableName}", "/users/{id}").hasRole("ADMIN")
                 .antMatchers("/getToken").permitAll().anyRequest().authenticated()
                 .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).
                 and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).

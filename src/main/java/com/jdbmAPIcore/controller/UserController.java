@@ -21,17 +21,17 @@ public class UserController {
 
     @GetMapping("/version")
     public String getVersion() {
-        return "0.2.0";
+        return "0.2.6";
     }
 
     @PostMapping("/createUsers")
     public Long createUser(@RequestBody UserRequestDTO userRequestDTO) {
-        return userService.createAccount(userRequestDTO.getName(), userRequestDTO.getLogin(), userRequestDTO.getPassword(), userRequestDTO.getPhone());
+        return userService.createUser(userRequestDTO.getUsername(), userRequestDTO.getPassword(), userRequestDTO.getPhone());
     }
 
     @GetMapping("/users/{id}")
     public UserResponseDTO getUser(@PathVariable Long id) {
-        return new UserResponseDTO(userService.getAccountById(id));
+        return new UserResponseDTO(userService.getUserById(id));
     }
 
     @GetMapping("/users")

@@ -1,29 +1,40 @@
 package com.jdbmAPIcore.controller.dto;
 
 import com.jdbmAPIcore.entity.User;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Set;
 
 public class UserResponseDTO {
 
     private Long userId;
 
-    private String name;
-
-    private String login;
-
+    private String username;
+    private String password;
     private Long phone;
+    private boolean accountNonExpired;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+    private boolean enabled;
 
-    public UserResponseDTO(Long userId, String name, String login, Long phone) {
+    public UserResponseDTO(Long userId, String username, Long phone, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled) {
         this.userId = userId;
-        this.name = name;
-        this.login = login;
+        this.username = username;
         this.phone = phone;
+        this.accountNonExpired = accountNonExpired;
+        this.accountNonLocked = accountNonLocked;
+        this.credentialsNonExpired = credentialsNonExpired;
+        this.enabled = enabled;
     }
 
-    public UserResponseDTO(User user) {
-        userId = user.getId();
-        name = user.getName();
-        login = user.getLogin();
-        phone = user.getPhone();
+    public UserResponseDTO(User accountById) {
+        this.userId = accountById.getId();
+        this.username = accountById.getUsername();
+        this.phone = accountById.getPhone();
+        this.accountNonExpired = accountById.isAccountNonExpired();
+        this.accountNonLocked = accountById.isAccountNonLocked();
+        this.credentialsNonExpired = accountById.isCredentialsNonExpired();
+        this.enabled = accountById.isEnabled();
     }
 
     public Long getUserId() {
@@ -34,20 +45,12 @@ public class UserResponseDTO {
         this.userId = userId;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Long getPhone() {
@@ -56,5 +59,37 @@ public class UserResponseDTO {
 
     public void setPhone(Long phone) {
         this.phone = phone;
+    }
+
+    public boolean isAccountNonExpired() {
+        return accountNonExpired;
+    }
+
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
+
+    public boolean isAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+
+    public boolean isCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
+
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }
