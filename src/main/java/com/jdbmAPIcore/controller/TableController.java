@@ -3,13 +3,14 @@ package com.jdbmAPIcore.controller;
 import com.jdbmAPIcore.controller.dto.InsertTableRequestDTO;
 import com.jdbmAPIcore.controller.dto.TableRequestDTO;
 
+import com.jdbmAPIcore.entity.Query.QueryResult;
 import com.jdbmAPIcore.service.TableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import java.sql.SQLException;
 import java.util.Map;
 
 @RestController
@@ -55,5 +56,10 @@ public class TableController {
     @DeleteMapping("/deleteFrom/{tableName}/{id}")
     public String deleteValues(@PathVariable String tableName, @PathVariable Long id, HttpServletRequest request) {
         return tableService.deleteFrom(tableName, id, request);
+    }
+
+    @PostMapping("/executeQuery")
+    public QueryResult executeQuery(@RequestBody Map<String, String> req, HttpServletRequest request) throws SQLException {
+        return tableService.executeQuery(req.get("sql"), request);
     }
 }

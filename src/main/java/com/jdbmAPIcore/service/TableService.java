@@ -1,10 +1,14 @@
 package com.jdbmAPIcore.service;
 
 import com.google.gson.Gson;
-import com.jdbmAPIcore.config.component.TokenFilter;
-import com.jdbmAPIcore.entity.Column;
+import com.jdbmAPIcore.entity.*;
+import com.jdbmAPIcore.entity.Query.QueryResult;
+import com.jdbmAPIcore.entity.Query.QueryRow;
+import com.jdbmAPIcore.entity.Query.Mapper.QueryRowMapper;
+import com.jdbmAPIcore.entity.Query.QueryValue;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -12,12 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.sql.SQLException;
+import java.util.*;
 
 @Service
 public class TableService {
@@ -36,6 +38,8 @@ public class TableService {
     @Autowired
     public TableService() {
     }
+
+    private static final Logger log = Logger.getLogger(TableService.class);
 
     public String createTable(String tableName, List<Column> columns, HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
@@ -78,6 +82,7 @@ public class TableService {
         }
 
         createTableQuery.append(")");
+        log.debug(createTableQuery.toString());
 
         jdbcTemplate.execute(createTableQuery.toString());
 
@@ -92,6 +97,7 @@ public class TableService {
         Claims username = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
 
         String sql = "DROP TABLE " + username.get("sub", String.class) + "_schema." + tableName;
+        log.debug(sql);
 
         jdbcTemplate.execute(sql);
 
@@ -133,6 +139,7 @@ public class TableService {
 
             insertQuery.append(");");
         }
+        log.debug(insertQuery.toString());
 
         jdbcTemplate.execute(insertQuery.toString());
 
@@ -143,6 +150,7 @@ public class TableService {
         String sql = "select column_name, data_type from information_schema.columns where table_name = ?";
 
         List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, tableName);
+        log.debug(sql);
 
         String jsonResult = new Gson().toJson(result);
 
@@ -157,6 +165,7 @@ public class TableService {
         Claims username = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
 
         String sql = "delete from " + username.get("sub", String.class) + "_schema." + tableName + " where id = " + id;
+        log.debug(sql);
 
         jdbcTemplate.execute(sql);
 
@@ -171,6 +180,7 @@ public class TableService {
         Claims username = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
 
         String sql = "select * from " + username.get("sub", String.class) + "_schema." + tableName;
+        log.debug(sql);
 
         List<Map<String, Object>> result = jdbcTemplate.queryForList(sql);
 
@@ -193,7 +203,49 @@ public class TableService {
             sqlBuilder.delete(sqlBuilder.length() - 4, sqlBuilder.length());
         }
         String sql = sqlBuilder.toString();
+        log.debug(sql);
+
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
         return new ResponseEntity<>(rows, HttpStatus.OK);
+    }
+
+    public QueryResult executeQuery(String sql, HttpServletRequest request) throws SQLException {
+        String bearerToken = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer "))
+            token = bearerToken.substring(7, bearerToken.length());
+
+        Claims username = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+
+        QueryResult result = new QueryResult();
+
+        String setSchema = "SET search_path TO " + username.get("sub", String.class) + "_schema" + ",public;";
+        log.debug(setSchema);
+
+        jdbcTemplate.execute(setSchema);
+
+        try {
+            List<List<QueryValue>> rows = jdbcTemplate.query(sql, new QueryRowMapper());
+
+            log.debug(sql);
+            log.debug(rows);
+
+            List<QueryRow> resultRows = new ArrayList<>();
+            List<QueryValue> rowValues = new ArrayList<>();
+
+            for (int i = 0; i < rows.size(); i++) {
+                rowValues = rows.get(i);
+                QueryRow resultRow = new QueryRow();
+                resultRow.setRow(rowValues);
+                resultRows.add(resultRow);
+            }
+
+            result = new QueryResult(rowValues.size(), resultRows.size(), resultRows);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new SQLException(e.getMessage());
+        }
+
+        return result;
     }
 }

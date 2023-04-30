@@ -21,7 +21,7 @@ public class UserController {
 
     @GetMapping("/version")
     public String getVersion() {
-        return "0.2.6";
+        return "0.3.0";
     }
 
     @PostMapping("/createUsers")
