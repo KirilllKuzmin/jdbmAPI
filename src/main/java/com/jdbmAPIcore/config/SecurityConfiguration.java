@@ -54,7 +54,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
         http.csrf().disable()
                 .authorizeRequests().antMatchers("/version", "/createTable", "/tableColumns", "/deleteFrom/{tableName}/{id}", "/selectFrom/{tableName}").hasAnyRole("USER","ADMIN")
                 .antMatchers("/users", "/createUsers", "/dropTable/{tableName}", "/users/{id}").hasRole("ADMIN")
-                .antMatchers("/getToken").permitAll().anyRequest().authenticated()
+                .antMatchers("/getToken", "/swagger-ui", "/swagger-ui/*", "/swagger-ui/index.html", "/v3/api-docs/*", "/v3/*").permitAll().anyRequest().authenticated()
                 .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).
                 and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).
                 and().addFilterBefore(customJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

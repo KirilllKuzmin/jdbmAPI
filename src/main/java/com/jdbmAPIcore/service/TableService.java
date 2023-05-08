@@ -1,11 +1,10 @@
 package com.jdbmAPIcore.service;
 
-import com.google.gson.Gson;
-import com.jdbmAPIcore.entity.*;
-import com.jdbmAPIcore.entity.Query.QueryResult;
-import com.jdbmAPIcore.entity.Query.QueryRow;
-import com.jdbmAPIcore.entity.Query.Mapper.QueryRowMapper;
-import com.jdbmAPIcore.entity.Query.QueryValue;
+import com.jdbmAPIcore.controller.dto.ColumnDTO;
+import com.jdbmAPIcore.controller.dto.QueryDTO.QueryResult;
+import com.jdbmAPIcore.controller.dto.QueryDTO.QueryRow;
+import com.jdbmAPIcore.controller.dto.QueryDTO.Mapper.QueryRowMapper;
+import com.jdbmAPIcore.controller.dto.QueryDTO.QueryValue;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.apache.log4j.Logger;
@@ -41,7 +40,7 @@ public class TableService {
 
     private static final Logger log = Logger.getLogger(TableService.class);
 
-    public String createTable(String tableName, List<Column> columns, HttpServletRequest request) {
+    public String createTable(String tableName, List<ColumnDTO> columnDTOS, HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer "))
             token = bearerToken.substring(7, bearerToken.length());
@@ -71,13 +70,13 @@ public class TableService {
                 .append(tableName)
                 .append(" (");
 
-        for (int i = 0; i < columns.size(); i++) {
-            Column column = columns.get(i);
-            createTableQuery.append(column.getName())
+        for (int i = 0; i < columnDTOS.size(); i++) {
+            ColumnDTO columnDTO = columnDTOS.get(i);
+            createTableQuery.append(columnDTO.getName())
                     .append(" ")
-                    .append(column.getType());
+                    .append(columnDTO.getType());
 
-            if (i != columns.size() - 1)
+            if (i != columnDTOS.size() - 1)
                 createTableQuery.append(", ");
         }
 
@@ -146,15 +145,16 @@ public class TableService {
         return "Data has been inserted successfully into " + tableName;
     }
 
-    public String getColumns(String tableName) {
+    public List<Map<String, Object>> getColumns(String tableName) {
         String sql = "select column_name, data_type from information_schema.columns where table_name = ?";
 
         List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, tableName);
         log.debug(sql);
 
-        String jsonResult = new Gson().toJson(result);
+       // String jsonResult = new Gson().toJson(result);
 
-        return "{\"COLUMNS\":" + jsonResult + "}";
+        //return "{\"COLUMNS\":" + jsonResult + "}";
+        return result;
     }
 
     public String deleteFrom(String tableName, Long id, HttpServletRequest request) {

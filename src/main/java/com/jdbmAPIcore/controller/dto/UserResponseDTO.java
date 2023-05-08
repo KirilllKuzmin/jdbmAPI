@@ -1,20 +1,30 @@
 package com.jdbmAPIcore.controller.dto;
 
 import com.jdbmAPIcore.entity.User;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Set;
 
+@Schema(description = "Сущность пользователя (response)")
 public class UserResponseDTO {
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long userId;
 
+    @Schema(description = "Имя пользователя", example = "Имя")
     private String username;
+    @Schema(description = "Пароль", example = "Пароль")
     private String password;
+    @Schema(description = "Номер телефона", example = "88005553535")
     private Long phone;
+    @Schema(description = "Пользователь открыт", example = "True")
     private boolean accountNonExpired;
+    @Schema(description = "Пользователь не заблокирован", example = "True")
     private boolean accountNonLocked;
+    @Schema(description = "Учетные данные не просрочены", example = "True")
     private boolean credentialsNonExpired;
+    @Schema(description = "Пользователь активен", example = "True")
     private boolean enabled;
 
     public UserResponseDTO(Long userId, String username, Long phone, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled) {

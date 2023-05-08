@@ -1,12 +1,17 @@
 package com.jdbmAPIcore.controller.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
 import java.util.Map;
 
+@Schema(description = "Сущность ответа вставки данных в таблицу")
 public class InsertTableRequestDTO {
 
+    @Schema(description = "Название таблицы", example = "my_table1")
     private String tableName;
 
+    @Schema(description = "Значение вставляемых данных")
     private List<Map<String, Object>> values;
 
     public InsertTableRequestDTO(String tableName, List<Map<String, Object>> values) {

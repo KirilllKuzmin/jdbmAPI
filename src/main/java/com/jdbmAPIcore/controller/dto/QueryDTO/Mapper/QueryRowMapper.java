@@ -1,6 +1,6 @@
-package com.jdbmAPIcore.entity.Query.Mapper;
+package com.jdbmAPIcore.controller.dto.QueryDTO.Mapper;
 
-import com.jdbmAPIcore.entity.Query.QueryValue;
+import com.jdbmAPIcore.controller.dto.QueryDTO.QueryValue;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
 

@@ -40,7 +40,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             roles = new ArrayList<SimpleGrantedAuthority>();
             roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
-            String sql = "update public.users set authorities = " + roles.toString() + " where id = " + user.getId();
+            String sql = "update public.users set authorities = '" + roles.toString() + "' where id = " + user.getId();
 
             jdbcTemplate.execute(sql);
 

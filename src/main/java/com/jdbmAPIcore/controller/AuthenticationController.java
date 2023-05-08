@@ -4,6 +4,8 @@ import com.jdbmAPIcore.controller.dto.AuthenticationRequestDTO;
 import com.jdbmAPIcore.controller.dto.AuthenticationResponseDTO;
 import com.jdbmAPIcore.service.CustomUserDetailsService;
 import com.jdbmAPIcore.service.JwtUtilService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@Tag(name="Аутентификация", description="Получение токена для взаимодействия с базой данных")
 public class AuthenticationController {
 
     @Autowired
@@ -27,6 +30,10 @@ public class AuthenticationController {
     @Autowired
     private JwtUtilService jwtUtil;
 
+    @Operation(
+            summary = "Получение токена",
+            description = "Позволяет получить токен для взаимодействия с сервером"
+    )
     @PostMapping(value = "/getToken")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDTO authenticationRequest)
             throws Exception {

@@ -1,18 +1,16 @@
 package com.jdbmAPIcore.controller.dto;
 
-import com.jdbmAPIcore.entity.Column;
-
 import java.util.List;
 
 public class TableRequestDTO {
 
     private String tableName;
 
-    private List<Column> columns;
+    private List<ColumnDTO> columnDTOS;
 
-    public TableRequestDTO(String tableName, List<Column> columns) {
+    public TableRequestDTO(String tableName, List<ColumnDTO> columnDTOS) {
         this.tableName = tableName;
-        this.columns = columns;
+        this.columnDTOS = columnDTOS;
     }
 
     public TableRequestDTO() {
@@ -26,11 +24,11 @@ public class TableRequestDTO {
         this.tableName = tableName;
     }
 
-    public List<Column> getColumns() {
-        return columns;
+    public List<ColumnDTO> getColumnDTOS() {
+        return columnDTOS;
     }
 
-    public void setColumns(List<Column> columns) {
-        this.columns = columns;
+    public void setColumnDTOS(List<ColumnDTO> columnDTOS) {
+        this.columnDTOS = columnDTOS;
     }
 }

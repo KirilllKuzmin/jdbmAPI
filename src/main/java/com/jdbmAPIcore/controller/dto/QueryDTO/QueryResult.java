@@ -1,13 +1,19 @@
-package com.jdbmAPIcore.entity.Query;
+package com.jdbmAPIcore.controller.dto.QueryDTO;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
+@Schema(description = "Результат SQL запроса")
 public class QueryResult {
 
+    @Schema(description = "Количество атрибутов", example = "0")
     private Integer columnCount;
 
+    @Schema(description = "Количество строк", example = "0")
     private Integer rowCount;
 
+    @Schema(description = "Строки")
     private List<QueryRow> rows;
 
     public QueryResult(Integer columnCount, Integer rowCount, List<QueryRow> rows) {

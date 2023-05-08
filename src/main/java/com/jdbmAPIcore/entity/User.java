@@ -1,10 +1,13 @@
 package com.jdbmAPIcore.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 
@@ -16,11 +19,13 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     @Id
+    @Min(1)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String username;
     private String password;
+    @Pattern(regexp = "[0-9]{11}")
     private Long phone;
     private boolean accountNonExpired;
     private boolean accountNonLocked;

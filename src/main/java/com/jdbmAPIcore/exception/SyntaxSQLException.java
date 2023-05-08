@@ -4,6 +4,4 @@ import java.sql.SQLException;
 
 public class SyntaxSQLException extends SQLException {
 
-
-
 }

@@ -1,11 +1,17 @@
-package com.jdbmAPIcore.entity.Query;
+package com.jdbmAPIcore.controller.dto.QueryDTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "Сущность значения SQL запроса")
 public class QueryValue {
 
+    @Schema(description = "Название атрибута", example = "Name")
     private String columnName;
 
+    @Schema(description = "Тип атрибута", example = "data type")
     private String columnType;
 
+    @Schema(description = "Значение", example = "Значение")
     private String value;
 
     public QueryValue(String columnName, String columnType, String value) {
