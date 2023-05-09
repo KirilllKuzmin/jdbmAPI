@@ -16,7 +16,7 @@ public class UserRequestDTO {
     @Schema(description = "Пароль", example = "Пароль")
     private String password;
     @Pattern(regexp = "[0-9]{11}")
-    @Schema(description = "Номер телефона", example = "Номер телефона")
+    @Schema(description = "Номер телефона", example = "89649003390")
     private Long phone;
 
     public UserRequestDTO(String password, String username, Long phone) {

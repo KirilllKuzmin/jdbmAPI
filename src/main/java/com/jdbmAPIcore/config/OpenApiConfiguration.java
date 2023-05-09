@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 @OpenAPIDefinition(
         info = @Info(
                 title = "jdbmAPI",
-                description = "Java Database Management API", version = "0.4.0",
+                description = "Java Database Management API", version = "0.4.1",
                 contact = @Contact(
                         name = "Kuzmin Kirill",
                         email = "kirill.kuzmin@nexign.com"

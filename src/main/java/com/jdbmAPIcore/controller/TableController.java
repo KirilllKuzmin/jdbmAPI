@@ -1,5 +1,6 @@
 package com.jdbmAPIcore.controller;
 
+import com.jdbmAPIcore.controller.dto.ExecuteQueryRequestDTO;
 import com.jdbmAPIcore.controller.dto.InsertTableRequestDTO;
 import com.jdbmAPIcore.controller.dto.TableRequestDTO;
 
@@ -7,6 +8,8 @@ import com.jdbmAPIcore.controller.dto.QueryDTO.QueryResult;
 import com.jdbmAPIcore.service.TableService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +55,10 @@ public class TableController {
             summary = "Вставка в таблицу",
             description = "Позволяет вставлять данные в любую таблицу текущей схемы ползьзователя в любом объеме"
     )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Data has been inserted successfully into tableName"),
+            @ApiResponse(responseCode = "403", description = "Forbidden")
+    })
     @PostMapping("/insertInto/{tableName}")
     public String insertInto(@PathVariable @Parameter(description = "Название таблицы") String tableName, @RequestBody InsertTableRequestDTO insertTableRequestDTO, HttpServletRequest request) {
         return tableService.insertInto(tableName, insertTableRequestDTO.getValues(), request);
@@ -95,7 +102,7 @@ public class TableController {
             description = "Позволяет извлечь любой SQL запрос (данные извлекаются исключительно из доступной схемы)"
     )
     @PostMapping("/executeQuery")
-    public QueryResult executeQuery(@RequestBody @Parameter(description = "SQL запрос") Map<String, String> sqlRequest, HttpServletRequest request) throws SQLException {
-        return tableService.executeQuery(sqlRequest.get("sql"), request);
+    public QueryResult executeQuery(@RequestBody @Parameter(description = "SQL запрос") ExecuteQueryRequestDTO sqlRequest, HttpServletRequest request) throws SQLException {
+        return tableService.executeQuery(sqlRequest.getSql(), request);
     }
 }
