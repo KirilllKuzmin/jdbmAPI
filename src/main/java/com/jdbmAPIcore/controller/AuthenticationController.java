@@ -32,7 +32,7 @@ public class AuthenticationController {
 
     @Operation(
             summary = "Получение токена",
-            description = "Позволяет получить токен для взаимодействия с сервером"
+            description = "Позволяет получить токен для взаимодействия с сервером."
     )
     @PostMapping(value = "/getToken")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDTO authenticationRequest)
